@@ -1,0 +1,23 @@
+{
+  "name": "react-native-screen-brightness",
+  "version": "2.0.0-alpha",
+  "summary": "RNIap",
+  "description": "Screen brightness module for iOS & Android on React Native",
+  "homepage": "https://github.com/robinpowered/react-native-screen-brightness",
+  "license": "MIT",
+  "authors": "Atticus White <atticus@robinpowered.com>",
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source": {
+    "git": "https://github.com/robinpowered/react-native-screen-brightness.git",
+    "tag": "2.0.0-alpha"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "requires_arc": true,
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}
