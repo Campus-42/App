@@ -1,0 +1,25 @@
+{
+  "name": "RnTestExceptionHandler",
+  "version": "1.0.0",
+  "summary": "RnTestExceptionHandler",
+  "description": "RnTestExceptionHandler",
+  "homepage": "https://github.com/master-atul/rn-test-exception-handler",
+  "license": "MIT",
+  "authors": {
+    "author": "author@domain.cn"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/author/RnTestExceptionHandler.git",
+    "tag": "master"
+  },
+  "source_files": "RnTestExceptionHandler/**/*.{h,m}",
+  "requires_arc": true,
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+module Pods_Campus42 {
+  umbrella header "Pods-Campus42-umbrella.h"
+
+  export *
+  module * { export * }
+}
