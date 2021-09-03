@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1053546856481",
+    "firebase_url": "https://campus42.firebaseio.com",
+    "project_id": "campus42",
+    "storage_bucket": "campus42.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1053546856481:android:e5735cc8fb3898d40ea360",
+        "android_client_info": {
+          "package_name": "com.campus42"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1053546856481-caujnkv4f7it0pgi9bf6eetasre23285.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg7cYz6vfUX5W8Xh59PkKxRcl1FmhU4HE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1053546856481-caujnkv4f7it0pgi9bf6eetasre23285.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1053546856481-p68a4lpbb7pve6qafndrpmpirahto6gf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.campus42.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

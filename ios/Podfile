@@ -1,33 +1,20 @@
-# Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+
+platform :ios, '10.0'
 
 target 'Campus42' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
+  pod 'GoogleMaps'
+  pod 'Google-Maps-iOS-Utils'
 
-  # Pods for Campus42
+  # React Native Permissions
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-Camera', :path => "#{permissions_path}/Camera"
+  pod 'Permission-MediaLibrary', :path => "#{permissions_path}/MediaLibrary"
+  pod 'Permission-PhotoLibrary', :path => "#{permissions_path}/PhotoLibrary"
 
-  target 'Campus42-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-  target 'Campus42Tests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
-end
-
-target 'Campus42-tvOS' do
-  # Comment the next line if you don't want to use dynamic frameworks
-  use_frameworks!
-
-  # Pods for Campus42-tvOS
-
-  target 'Campus42-tvOSTests' do
-    inherit! :search_paths
-    # Pods for testing
-  end
-
+  config = use_native_modules!
+  use_react_native!(:path => config["reactNativePath"])
 end

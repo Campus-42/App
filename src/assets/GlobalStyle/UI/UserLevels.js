@@ -1,15 +1,14 @@
-import React from "react";
-import { StyleSheet, Easing, Text, View } from "react-native";
-import { ColorStyle, Palettes } from "../ColorStyle";
-import { Measurements } from "../Measurements";
-import { Animated } from "react-native";
-import { TextStyle } from "../TextStyle";
-import { LevelBadge } from "../../../screens/ProfileStack/Profile/components/LevelBadge";
-import PropTypes from "prop-types";
-import { Campus } from "../../Campus";
-import { TouchableOpacity } from "react-native";
-import FontAwesome5Icon from "react-native-vector-icons/FontAwesome5";
-import * as Animtable from "react-native-animatable";
+import React from 'react';
+import {StyleSheet, Easing, Text, View} from 'react-native';
+import {ColorStyle, Palettes} from '../ColorStyle';
+import {Measurements} from '../Measurements';
+import {Animated} from 'react-native';
+import {TextStyle} from '../TextStyle';
+import {LevelBadge} from '../../../screens/ProfileStack/Profile/components/LevelBadge';
+import PropTypes from 'prop-types';
+import {Campus} from '../../Campus';
+import {TouchableOpacity} from 'react-native';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 export function UserLevels(props) {
   return (props.campusPointSystem || {}).level_limits ? (
@@ -20,12 +19,10 @@ export function UserLevels(props) {
 export class _UserLevels extends React.Component {
   constructor() {
     super();
-    this.outerLine = React.createRef();
     this.state = {
       width: new Animated.Value(0),
       progress: undefined,
       triggeredUpdate: false,
-      reloadingPoints: false,
     };
   }
 
@@ -34,14 +31,14 @@ export class _UserLevels extends React.Component {
   }
 
   componentDidUpdate() {
-    const { user, campusPointSystem } = this.props;
+    const {user, campusPointSystem} = this.props;
 
     const existingProps = user && (campusPointSystem || {}).level_limits;
 
     if (existingProps) {
       const lvl = Campus.Funcs.points.getLevelInfoForProgression(
         campusPointSystem.level_limits,
-        user
+        user,
       );
 
       const animWidth =
@@ -70,12 +67,13 @@ export class _UserLevels extends React.Component {
         }).start();
       }
 
-      if (lvl.progress >= 1) this.reloadPoints();
+      if (lvl.progress >= 1)
+        Campus.Funcs.points.triggerPointEvent('_reload', this.props.campus.key);
     }
   }
   // TODO: What do I need to do to level up?
   render() {
-    const user = { level: 1, points: 0, ...this.props.user };
+    const user = {level: 1, points: 0, ...this.props.user};
 
     return (this.props.user && this.state.show) || this.props.show ? (
       <View
@@ -85,8 +83,7 @@ export class _UserLevels extends React.Component {
             backgroundColor: Palettes.background.palette6,
           },
           this.props.showShadow && styles.shadow,
-        ]}
-      >
+        ]}>
         {this.props.showTitle && (
           <Text style={styles.title}>
             {getText(user.first_name, this.state.progress, this.state.show)}
@@ -94,15 +91,15 @@ export class _UserLevels extends React.Component {
         )}
         <View style={styles.lineAndBadgeContainer}>
           <LevelBadge
-            position={"relative"}
-            user={{ ...user, level: user.level || 1 }}
+            position={'relative'}
+            user={{...user, level: user.level || 1}}
             height={BADGE_SIZE}
             style={styles.levelBadge}
             useMargin={false}
             fill={0}
           />
           <View style={styles.lineContainer}>
-            <Animtable.View ref={this.outerLine} style={styles.outerLine}>
+            <View style={styles.outerLine}>
               <Animated.View
                 style={[
                   styles.innerLine,
@@ -112,14 +109,14 @@ export class _UserLevels extends React.Component {
                   },
                 ]}
               />
-            </Animtable.View>
+            </View>
             <Text style={styles.pointDifference}>
               {this.state.levelPointsEarned} / {this.state.levelPointsNeeded}
             </Text>
           </View>
           <LevelBadge
-            position={"relative"}
-            user={{ ...user, level: (user.level || 1) + 1 }}
+            position={'relative'}
+            user={{...user, level: (user.level || 1) + 1}}
             height={BADGE_SIZE}
             style={styles.levelBadge}
             useMargin={false}
@@ -129,11 +126,10 @@ export class _UserLevels extends React.Component {
         {this.props.navigate && (
           <TouchableOpacity
             style={styles.earnMoreButton}
-            onPress={() => this.props.navigate("Point Events")}
-          >
+            onPress={() => this.props.navigate('Point Events')}>
             <Text style={styles.earnMoreText}>Earn more points</Text>
             <FontAwesome5Icon
-              name={"arrow-right"}
+              name={'arrow-right'}
               color={ColorStyle.blueButtonText}
               size={Measurements.unit * 0.5}
             />
@@ -142,22 +138,13 @@ export class _UserLevels extends React.Component {
       </View>
     ) : null;
   }
-  reloadPoints = () => {
-    if (!this.state.reloadingPoints) {
-      this.setState({ reloadingPoints: true });
-
-      Campus.Funcs.points
-        .triggerPointEvent("_reload", this.props.campus.key)
-        .finally(() => this.setState({ reloadingPoints: false }));
-    }
-  };
 }
 
 function getText(name, progress, show) {
   if (show) return `Almost there ${name}!`;
   else if (progress > 0.5) return `Steady progress ${name}!`;
-  else if (progress > 0.1) return "Nice start, keep going!";
-  else return "Gotta start somewhere";
+  else if (progress > 0.1) return 'Nice start, keep going!';
+  else return 'Gotta start somewhere';
 }
 
 const LINE_HEIGHT = 6;
@@ -169,8 +156,8 @@ const styles = StyleSheet.create({
   container: {
     width: WIDTH,
     minHeight: Measurements.unit * 3,
-    alignSelf: "center",
-    alignItems: "center",
+    alignSelf: 'center',
+    alignItems: 'center',
     marginVertical: Measurements.marginQuarter,
     borderRadius: Measurements.unit,
     padding: Measurements.marginHalf,
@@ -189,41 +176,41 @@ const styles = StyleSheet.create({
   },
   title: {
     ...TextStyle.bodyMedium,
-    textAlign: "left",
-    alignSelf: "flex-start",
+    textAlign: 'left',
+    alignSelf: 'flex-start',
     marginBottom: Measurements.marginHalf,
     marginLeft: 10,
   },
   lineAndBadgeContainer: {
     width: WIDTH,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: Measurements.width * 0.025,
-    alignItems: "center",
+    alignItems: 'center',
     marginVertical: Measurements.marginQuarter,
   },
   badgeContainer: {
     width: WIDTH,
     marginVertical: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: (WIDTH - LINE_WIDTH) / 4,
-    alignItems: "center",
+    alignItems: 'center',
   },
-  levelBadge: { marginRight: 0, marginBottom: 0 },
+  levelBadge: {marginRight: 0, marginBottom: 0},
   text: {
     ...TextStyle.bodyMedium,
   },
   pointDifference: {
     ...TextStyle.levelText,
     fontSize: TextStyle.bodyRegular.fontSize,
-    alignSelf: "flex-end",
+    alignSelf: 'flex-end',
   },
   earnMoreButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    alignSelf: "flex-start",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignSelf: 'flex-start',
 
     marginTop: 4,
     marginLeft: 4,
@@ -235,11 +222,11 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   shadow: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 5,
-    elevation: 4,
+    elevation: 2,
   },
 });
 

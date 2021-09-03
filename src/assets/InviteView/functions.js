@@ -1,23 +1,23 @@
-import { db, auth } from "../Firebase/Firebase";
-import { getUserInfoForUID } from "../Firebase/functions";
-import { DateFuncs } from "../Date";
-import { bubbleFuncs } from "../Campus/functions/bubble";
-import { MessageFuncs } from "../../screens/Bubbles/Bubbles/functions";
-import { Campus } from "../Campus";
+import {db, auth} from '../Firebase/Firebase';
+import {getUserInfoForUID} from '../Firebase/functions';
+import {DateFuncs} from '../Date';
+import {bubbleFuncs} from '../Campus/functions/bubble';
+import {MessageFuncs} from '../../screens/Bubbles/Bubbles/functions';
+import {Campus} from '../Campus';
 
 export const InviteFuncs = {
   search: async function (search, campus_key) {
-    const arr = search.toLowerCase().split(" ");
+    const arr = search.toLowerCase().split(' ');
     return db
-      .collection("users")
-      .where("campus", "==", campus_key)
-      .where("search_index", "array-contains-any", arr.slice(0, 10))
+      .collection('users')
+      .where('campus', '==', campus_key)
+      .where('search_index', 'array-contains-any', arr.slice(0, 10))
       .get()
       .then((querySnapShot) => {
         const users = [];
         querySnapShot.forEach((elem) => {
           elem.id !== auth.currentUser.uid &&
-            users.push({ ...elem.data(), uid: elem.id });
+            users.push({...elem.data(), uid: elem.id});
         });
         return users;
       })
@@ -29,35 +29,33 @@ export const InviteFuncs = {
     sender,
     receiver,
     objName,
-    type = "event" || "society",
-    senderType = "user" || "society",
+    type = 'event' || 'society',
+    senderType = 'user' || 'society',
     campusKey,
     date,
     image,
     objId,
-    obj
+    obj,
   ) {
     /**
      * Receives the info for event/society and necessary user info
      */
 
-    console.log(arguments);
-
-    const tags = type === "event" ? obj.tags : [];
-    const event_end_date = type == "event" ? obj.date.end : new Date();
+    const tags = type === 'event' ? obj.tags : [];
+    const event_end_date = type == 'event' ? obj.date.end : new Date();
     const members =
-      type == "society"
+      type == 'society'
         ? obj.members.length
-        : type == "bubble"
+        : type == 'bubble'
         ? obj.member_uids
         : obj.participants.length;
 
-    const points = Campus.Constants.Points.getPointEvent("confirmedInvitation");
+    const points = Campus.Constants.Points.getPointEvent('confirmedInvitation');
 
     return db
-      .collection("campuses")
+      .collection('campuses')
       .doc(campusKey)
-      .collection("invites")
+      .collection('invites')
       .add({
         type: type,
         sender: auth.currentUser.uid,
@@ -79,31 +77,29 @@ export const InviteFuncs = {
         visible: true,
       })
       .then((doc) => {
-        __DEV__ && alert("Yes");
-        console.log("Created new invite", doc.id);
-        if (type == "bubble") {
+        console.log('Created new invite', doc.id);
+        if (type == 'bubble') {
           MessageFuncs.sendBubbleSystemMessage(
             objId,
             `${sender.first_name} ${sender.last_name} invited ${receiver.first_name} ${receiver.last_name}`,
-            obj
+            obj,
           );
         }
       })
 
       .catch((err) => {
-        __DEV__ && alert("No");
-        console.warn("Could not create invite", err);
+        console.warn('Could not create invite', err);
         setError(true);
       });
   },
   getSuggestions: async function (campusKey) {
     return db
-      .collection("campuses")
+      .collection('campuses')
       .doc(campusKey)
-      .collection("invites")
-      .where("visible", "==", true)
-      .where("search_index", "array-contains", auth.currentUser.uid)
-      .orderBy("create_date", "desc")
+      .collection('invites')
+      .where('visible', '==', true)
+      .where('search_index', 'array-contains', auth.currentUser.uid)
+      .orderBy('create_date', 'desc')
       .limit(10)
       .get()
       .then(async (querySnapShot) => {
@@ -126,12 +122,12 @@ export const InviteFuncs = {
               .then((data) => {
                 return data;
               })
-              .catch((err) => console.warn("Could not get user info", err));
-          })
+              .catch((err) => console.warn('Could not get user info', err));
+          }),
         );
 
         return suggestions.filter(
-          (elem) => elem !== undefined && Object.keys(elem).length > 5
+          (elem) => elem !== undefined && Object.keys(elem).length > 5,
         );
       })
       .catch((err) => {
@@ -140,18 +136,18 @@ export const InviteFuncs = {
   },
   getFilteredSuggestions: async function (invitees, rawSuggestions) {
     const newSuggestions = rawSuggestions.filter(
-      (elem1) => !invitees.some((elem2) => elem1.uid === elem2.uid)
+      (elem1) => !invitees.some((elem2) => elem1.uid === elem2.uid),
     );
     return newSuggestions;
   },
   getAlreadyInvited: async function (campusKey, type, objID) {
     return db
-      .collection("campuses")
+      .collection('campuses')
       .doc(campusKey)
-      .collection("invites")
-      .where("obj_id", "==", objID)
-      .where("visible", "==", true)
-      .where("type", "==", type)
+      .collection('invites')
+      .where('obj_id', '==', objID)
+      .where('visible', '==', true)
+      .where('type', '==', type)
       .get()
       .then((querySnapShot) => {
         const uids = [];

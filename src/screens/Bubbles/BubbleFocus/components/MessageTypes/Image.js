@@ -1,13 +1,13 @@
-import React from "react";
-import { Pressable, StyleSheet, View } from "react-native";
-import { auth } from "../../../../../assets/Firebase/Firebase";
-import { GlobalStyle } from "../../../../../assets/GlobalStyle";
-import { UserImage } from "../../../../ProfileStack/Profile/components/UserImage";
-import { LikeContainer } from "../LikeContainer";
-import { styles as textStyles } from "./NormalText";
+import React from 'react';
+import {Pressable, StyleSheet, View} from 'react-native';
+import {auth} from '../../../../../assets/Firebase/Firebase';
+import {GlobalStyle} from '../../../../../assets/GlobalStyle';
+import {UserImage} from '../../../../ProfileStack/Profile/components/UserImage';
+import {LikeContainer} from '../LikeContainer';
+import {styles as textStyles} from './NormalText';
 
 export function ImageMessage(props) {
-  const { item } = props;
+  const {item} = props;
   const isSender = item.creator == auth.currentUser.uid;
 
   return (
@@ -20,13 +20,12 @@ export function ImageMessage(props) {
       ]}
       allowDoublePress={props.allowLiking}
       onLongPress={() => props.onHold(item.id)}
-      onPress={() => props.navigate("Image Focus", { uri: item.image })}
-      onDoublePress={() => props.toggleLike(item)}
-    >
+      onPress={() => props.navigate('Image Focus', {uri: item.image})}
+      onDoublePress={() => props.toggleLike(item)}>
       <View style={textStyles.avatarContainer}>
         {props.showAvatar && (
           <UserImage
-            user={props.user || {}}
+            user={props.user}
             style={{
               height: GlobalStyle.Measurements.unit * 1.5,
               width: GlobalStyle.Measurements.unit * 1.5,
@@ -36,10 +35,7 @@ export function ImageMessage(props) {
         )}
       </View>
       <View style={styles.imageWrapper}>
-        <GlobalStyle.UI.Image
-          source={{ uri: item.image }}
-          style={styles.image}
-        />
+        <GlobalStyle.UI.Image source={{uri: item.image}} style={styles.image} />
         <LikeContainer
           item={item}
           isSender={isSender}
@@ -58,12 +54,12 @@ const styles = StyleSheet.create({
     borderRadius: GlobalStyle.Measurements.unit,
     marginRight: 10,
     borderWidth: 0.5,
-    borderColor: "#e5e5e5",
+    borderColor: '#e5e5e5',
   },
 
   imageWrapper: {
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 3 },
+    shadowColor: '#000',
+    shadowOffset: {width: 0, height: 3},
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 6,

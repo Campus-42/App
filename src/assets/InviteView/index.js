@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Text,
   View,
@@ -6,21 +6,21 @@ import {
   TouchableOpacity,
   ScrollView,
   Platform,
-} from "react-native";
-import { SwipeUpViewLarge } from "../SwipeUpView";
-import PropTypes from "prop-types";
-import { styles } from "./style";
-import TouchableShrink from "../TouchableShrink/TouchableShrink";
-import { GlobalStyle } from "../GlobalStyle";
-import { UserComponent } from "./UserComponent";
-import { InviteFuncs } from "./functions";
-import { InviteAnimation } from "./InviteAnimation";
-import { FetchError } from "../FetchError/FetchError";
-import { DoneAnimation } from "./DoneAnimation";
-import { EmptyBox } from "../EmptyAnimation";
-import { LoadingCircle } from "../LottieAnims/loading";
-import { Text as AnimatableText } from "react-native-animatable";
-import { triggerHaptic } from "../Haptic/hapticFeedback";
+} from 'react-native';
+import {SwipeUpViewLarge} from '../SwipeUpView';
+import PropTypes from 'prop-types';
+import {styles} from './style';
+import TouchableShrink from '../TouchableShrink/TouchableShrink';
+import {GlobalStyle} from '../GlobalStyle';
+import {UserComponent} from './UserComponent';
+import {InviteFuncs} from './functions';
+import {InviteAnimation} from './InviteAnimation';
+import {FetchError} from '../FetchError/FetchError';
+import {DoneAnimation} from './DoneAnimation';
+import {EmptyBox} from '../EmptyAnimation';
+import {LoadingCircle} from '../LottieAnims/loading';
+import {Text as AnimatableText} from 'react-native-animatable';
+import {triggerHaptic} from '../Haptic/hapticFeedback';
 
 export const InviteView = (props) => {
   const [invitees, setInvitees] = React.useState([]);
@@ -44,7 +44,7 @@ export const InviteView = (props) => {
       setMounted(true);
       InviteFuncs.getAlreadyInvited(props.campus.key, props.type, props.obj.id)
         .then((uids) => {
-          if (props.type == "bubble")
+          if (props.type == 'bubble')
             uids = uids.filter((e) => e.claimed === false);
           setAlreadyInvited(uids);
           setError(false);
@@ -52,13 +52,13 @@ export const InviteView = (props) => {
         .catch((err) => {
           setError(true);
           setAlreadyInvited([]);
-          console.trace("[Error] Could not get already invited users", err);
+          console.trace('[Error] Could not get already invited users', err);
         })
         .finally(() =>
           InviteFuncs.getSuggestions(props.campus.key).then((suggestions) => {
             setSuggestions(suggestions);
             setRawSuggestions(suggestions);
-          })
+          }),
         );
     }
 
@@ -68,7 +68,7 @@ export const InviteView = (props) => {
   const participants =
     props.obj.participants || props.obj.members || props.obj.member_uids || [];
   const alreadyInvitedUsersWithProps = alreadyInvited.concat(
-    props.invitedUsers
+    props.invitedUsers,
   );
   const disabledUids = alreadyInvitedUsersWithProps.concat(participants);
 
@@ -76,39 +76,37 @@ export const InviteView = (props) => {
     <SwipeUpViewLarge
       isModal={props.isModal}
       isActive={props.isActive}
-      onClose={props.onClose}
-    >
+      onClose={props.onClose}>
       <View style={styles.container}>
         <Text style={styles.title}>Invite Friends</Text>
         <GlobalStyle.UI.TextInput
           ref={textinput}
           showSearchIcon
-          placeholder={"Search for students to invite"}
+          placeholder={'Search for students to invite'}
           onFocus={() => setTyping(true)}
-          keyboardType={"email-address"}
-          returnKeyType={"search"}
+          keyboardType={'email-address'}
+          returnKeyType={'search'}
           onChangeText={search}
           onEndEditing={() => {
             setTimeout(() => setTyping(false), 1000);
           }}
         />
         <ScrollView
-          keyboardShouldPersistTaps={"handled"}
+          keyboardShouldPersistTaps={'handled'}
           scrollEnabled={!done}
           style={[
             styles.flatlist,
             !props.isModal && {
               height:
-                Platform.OS == "ios"
+                Platform.OS == 'ios'
                   ? styles.flatlist.height +
                     GlobalStyle.Measurements.safeheight * 0.05
                   : styles.flatlist.height,
             },
           ]}
           contentContainerStyle={{
-            alignItems: "center",
-          }}
-        >
+            alignItems: 'center',
+          }}>
           {error === false && searchActive && !done && (
             <TouchableOpacity
               onPress={() => {
@@ -119,8 +117,7 @@ export const InviteView = (props) => {
                 } catch (err) {
                   console.warn(err);
                 }
-              }}
-            >
+              }}>
               <Text style={styles.quitSearchButton}>Stop Searching</Text>
             </TouchableOpacity>
           )}
@@ -130,14 +127,14 @@ export const InviteView = (props) => {
             </View>
           ) : error ? (
             <FetchError
-              errorText={"Something went wrong fetching suggestions"}
+              errorText={'Something went wrong fetching suggestions'}
             />
           ) : !searchActive && invitees.length != 0 ? (
             invitees
               .slice(0, 3)
               .map((item, index) => (
                 <UserComponent
-                  animation={"fadeInUpBig"}
+                  animation={'fadeInUpBig'}
                   key={item.uid}
                   index={index}
                   colors={props.campus.colors}
@@ -146,7 +143,7 @@ export const InviteView = (props) => {
                   onPress={handlePress}
                   subTitle={
                     alreadyInvitedUsersWithProps.includes(item.uid)
-                      ? item.first_name + " is already invited"
+                      ? item.first_name + ' is already invited'
                       : undefined
                   }
                   disabled={alreadyInvitedUsersWithProps.includes(item.uid)}
@@ -160,7 +157,7 @@ export const InviteView = (props) => {
               (suggestions.filter(
                 (item) =>
                   !participants.includes(item.uid) &&
-                  !alreadyInvitedUsersWithProps.includes(item.uid)
+                  !alreadyInvitedUsersWithProps.includes(item.uid),
               ).length ==
                 0) ? (
             <InviteAnimation />
@@ -169,7 +166,7 @@ export const InviteView = (props) => {
               .slice(0, 3)
               .map((item, index) => (
                 <UserComponent
-                  animation={"fadeInUpBig"}
+                  animation={'fadeInUpBig'}
                   key={item.uid}
                   index={index}
                   colors={props.campus.colors}
@@ -179,13 +176,13 @@ export const InviteView = (props) => {
                   subTitle={
                     participants.includes(item.uid)
                       ? item.first_name +
-                        (props.type == "event"
-                          ? " is already going"
-                          : props.type == "society" || props.type == "bubble"
-                          ? " is already a member"
-                          : " cannot be invited")
+                        (props.type == 'event'
+                          ? ' is already going'
+                          : props.type == 'society' || props.type == 'bubble'
+                          ? ' is already a member'
+                          : ' cannot be invited')
                       : alreadyInvitedUsersWithProps.includes(item.uid)
-                      ? item.first_name + " is already invited"
+                      ? item.first_name + ' is already invited'
                       : undefined
                   }
                   disabled={disabledUids.includes(item.uid)}
@@ -209,14 +206,13 @@ export const InviteView = (props) => {
             suggestions.filter(
               (item) =>
                 !participants.includes(item.uid) &&
-                !alreadyInvitedUsersWithProps.includes(item.uid)
+                !alreadyInvitedUsersWithProps.includes(item.uid),
             ).length > 0 && (
               <AnimatableText
                 duration={450}
                 delay={300}
-                animation={"fadeInUpBig"}
-                style={styles.suggestionsText}
-              >
+                animation={'fadeInUpBig'}
+                style={styles.suggestionsText}>
                 Suggestions for You
               </AnimatableText>
             )}
@@ -228,12 +224,12 @@ export const InviteView = (props) => {
                 .filter(
                   (item) =>
                     !participants.includes(item.uid) &&
-                    !alreadyInvitedUsersWithProps.includes(item.uid)
+                    !alreadyInvitedUsersWithProps.includes(item.uid),
                 )
                 .slice(0, 3)
                 .map((item, index) => (
                   <UserComponent
-                    animation={"fadeInUpBig"}
+                    animation={'fadeInUpBig'}
                     key={item.uid}
                     delay={400}
                     index={index}
@@ -243,7 +239,7 @@ export const InviteView = (props) => {
                     onPress={handlePress}
                     subTitle={
                       alreadyInvitedUsersWithProps.includes(item.uid)
-                        ? item.first_name + " is already invited"
+                        ? item.first_name + ' is already invited'
                         : undefined
                     }
                     disabled={alreadyInvitedUsersWithProps.includes(item.uid)}
@@ -261,15 +257,14 @@ export const InviteView = (props) => {
           style={styles.inviteButton}
           gradientColor={props.campus.colors.main}
           showIcon
-          icon={done ? "chevron-down" : "user-plus"}
-          iconSize={Dimensions.get("screen").fontScale * (done ? 15 : 13)}
+          icon={done ? 'chevron-down' : 'user-plus'}
+          iconSize={Dimensions.get('screen').fontScale * (done ? 15 : 13)}
           disabled={invitees.length == 0 && done === false}
           showShadow={invitees.length > 0}
           showGradient
-          loading={inviting}
-        >
+          loading={inviting}>
           <Text style={styles.inviteButtonText}>
-            {done ? "Go Back" : "Invite"}
+            {done ? 'Go Back' : 'Invite'}
           </Text>
         </TouchableShrink>
       </View>
@@ -278,7 +273,7 @@ export const InviteView = (props) => {
   function search(text) {
     setSearchActive(true);
     setSearching(true);
-    setSearchIsNotEmpty(text.replace(/\s/g, "").length > 0);
+    setSearchIsNotEmpty(text.replace(/\s/g, '').length > 0);
     setTimeout(() => {
       InviteFuncs.search(text, props.campus.key)
         .then((res) => {
@@ -286,7 +281,7 @@ export const InviteView = (props) => {
           setError(false);
         })
         .catch((err) => {
-          console.warn("Could not search for invitees", err);
+          console.warn('Could not search for invitees', err);
           setError(true);
           setSearchRes([]);
         })
@@ -306,7 +301,7 @@ export const InviteView = (props) => {
 
     const newSuggestions = await InviteFuncs.getFilteredSuggestions(
       invs,
-      rawSuggestions
+      rawSuggestions,
     );
     setSuggestions(newSuggestions);
   }
@@ -320,25 +315,25 @@ export const InviteView = (props) => {
         InviteFuncs.invite(
           props.user,
           invitee,
-          props.type == "event" ? props.obj.title : props.obj.name,
+          props.type == 'event' ? props.obj.title : props.obj.name,
           props.type,
           props.senderType,
           props.campus.key,
-          props.type == "event" ? new Date(props.obj.date.start) : new Date(), // We won't use the date if it is society. But we'll pass just in case to avoid errors
-          props.type == "event"
+          props.type == 'event' ? new Date(props.obj.date.start) : new Date(), // We won't use the date if it is society. But we'll pass just in case to avoid errors
+          props.type == 'event'
             ? props.obj.images.preview
-            : props.type == "society"
+            : props.type == 'society'
             ? props.obj.images.logo
             : props.obj.image,
           props.obj.id,
-          props.obj
-        ).catch(__DEV__ && alert);
+          props.obj,
+        );
       });
       setInviting(false);
       setSearchActive(false);
       setDone(true);
       // setTimeout(() => setDone(false), 2500);
-      setTimeout(() => triggerHaptic("notificationSuccess"), 400);
+      setTimeout(() => triggerHaptic('notificationSuccess'), 400);
     }
   }
 };
@@ -348,12 +343,12 @@ InviteView.defaultProps = {
   onClose: () => {},
   campus: {
     colors: {},
-    key: "",
+    key: '',
   },
-  obj: { title: "", name: "", date: new Date() },
-  senderType: "",
+  obj: {title: '', name: '', date: new Date()},
+  senderType: '',
   user: {},
-  type: "",
+  type: '',
   isModal: true,
   invitedUsers: [],
 };

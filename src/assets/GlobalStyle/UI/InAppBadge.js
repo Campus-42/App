@@ -1,26 +1,23 @@
-import React from "react";
-import { View, Text } from "react-native";
-import { Measurements } from "../Measurements";
-import { ColorStyle } from "../ColorStyle";
-import PropTypes from "prop-types";
-import { inAppBadgeEmitter } from "../../EventEmitter";
-import { TextStyle } from "../TextStyle";
+import React from 'react';
+import {View, Text} from 'react-native';
+import {Measurements} from '../Measurements';
+import {ColorStyle} from '../ColorStyle';
+import PropTypes from 'prop-types';
+import {inAppBadgeEmitter} from '../../EventEmitter';
+import {TextStyle} from '../TextStyle';
 
 export function InAppBadge(props) {
   /**
    * An in-app badge to place in order to draw attention from the user.
    */
   const color = props.color || ColorStyle.getCampusColors().main;
-
-  const textStyleAndSize = { ...textStyle, fontSize: sizes[props.size] * 0.85 };
-
   return (
     <View
       style={[
         style,
         {
-          width: sizes[props.size] * 1.5,
-          height: sizes[props.size] * 1.5,
+          minWidth: sizes[props.size],
+          minHeight: sizes[props.size],
           backgroundColor: color,
           shadowColor: color,
         },
@@ -29,9 +26,8 @@ export function InAppBadge(props) {
           paddingVertical: 3,
         },
         props.style,
-      ]}
-    >
-      {props.number && <Text style={textStyleAndSize}>{props.number}</Text>}
+      ]}>
+      {props.number && <Text style={textStyle}>{props.number}</Text>}
     </View>
   );
 }
@@ -43,41 +39,41 @@ const sizes = {
   xlarge: 20,
 };
 const style = {
-  position: "absolute",
+  position: 'absolute',
   zIndex: 1000,
 
   minWidth: 16,
   minHeight: 16,
   borderRadius: 20,
-  backgroundColor: "#f23427",
+  backgroundColor: '#f23427',
   marginBottom: -5,
   marginLeft: Measurements.width * 0.8 - 10,
 
-  shadowColor: "#f23427",
-  shadowOffset: { width: 0, height: 2 },
+  shadowColor: '#f23427',
+  shadowOffset: {width: 0, height: 2},
   shadowRadius: 2,
   shadowOpacity: 0.3,
 
-  flexDirection: "row",
-  alignItems: "center",
-  justifyContent: "center",
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
 };
 const textStyle = {
   ...TextStyle.bodySmall,
-  color: "#ffffff",
-  fontWeight: "bold",
+  color: '#ffffff',
+  fontWeight: '500',
 };
 
 InAppBadge.defaultProps = {
   style: {},
-  size: "regular",
+  size: 'regular',
   animate: true,
-  key: "-",
+  key: '-',
   number: false,
 };
 InAppBadge.propTypes = {
   style: PropTypes.object,
-  size: PropTypes.oneOf(["xsmall", "small", "regular", "large", "xlarge"]),
+  size: PropTypes.oneOf(['xsmall', 'small', 'regular', 'large', 'xlarge']),
   animate: PropTypes.bool,
   key: PropTypes.string.isRequired,
   number: PropTypes.number,

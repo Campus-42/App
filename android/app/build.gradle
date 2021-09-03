@@ -140,8 +140,8 @@ android {
         multiDexEnabled true
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 61
-        versionName '1.6.5'
+        versionCode 53
+        versionName '1.6.3'
         missingDimensionStrategy 'react-native-camera', 'general' // <--- insert this line
     // manifestPlaceholders = [ mapsApiKey : properties.getProperties('AIzaSyAiNCZ_3CDNXynFas4b1UsHI6XdQwT6YcY', '') ]
     }
@@ -149,7 +149,7 @@ android {
         abi {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
-            universalApk true  // If true, also generate a universal APK
+            universalApk false  // If true, also generate a universal APK
             include 'armeabi-v7a', 'x86', 'arm64-v8a', 'x86_64'
         }
     }
