@@ -92,7 +92,6 @@ export class TextInput extends React.Component {
                 color={this.props.colors.extraDark}
               />
             </GlobalStyle.UI.Touchable>
-
             <GlobalStyle.UI.Touchable
               onPress={this.props.selectImage}
               hitSlop={5}
